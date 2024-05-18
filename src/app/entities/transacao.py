@@ -1,14 +1,27 @@
 from typing import Tuple
 from ..errors.entity_errors import ParamNotValidated
+from ..enums.transacao_tipo_enum import TransacaoTipoEnum
 
 class Transacao:
-    
     valor: float
     timestamp: float
-    tipo: str
+    transacao_tipo:TransacaoTipoEnum
 
-    def __init__(self,valor: float, tipo: str, timestamp: float):
-        pass
+    def __init__(self,valor: float,timestamp: float, transacao_tipo: TransacaoTipoEnum):
+        validation_valor = self.validate_valor(valor)
+        if validation_valor[0] is False:
+            raise ParamNotValidated("valor", validation_valor[1])
+        self.valor = valor
+        
+        validation_timestamp = self.validate_timestamp(timestamp)
+        if validation_timestamp[0] is False:
+            raise ParamNotValidated("timestamp", validation_timestamp[1])
+        self.timestamp = timestamp
+
+        validation_transacao_tipo= self.validate_transacao_tipo(transacao_tipo)
+        if validation_transacao_tipo[0] is False:
+            raise ParamNotValidated("tipo", validation_transacao_tipo[1])
+        self.transacao_tipo = transacao_tipo
         
     @staticmethod
     def validate_valor(valor: float) -> Tuple[bool,float]:
@@ -17,16 +30,7 @@ class Transacao:
         if type(valor) != float:
             return False, "valor must be a float"
         return True
-
-    @staticmethod
-    def validate_tipo(tipo: str) -> Tuple[bool,str]:
-        if tipo is None:
-            return False, "tipo is required"
-        if type(tipo) != str:
-            return False, "tipo must be a string"
-        return True
         
-    
     @staticmethod
     def validate_timestamp(timestamp: float) -> Tuple[bool,float]:
         if timestamp is None:
@@ -35,3 +39,10 @@ class Transacao:
             return False, "timestamp must be a float"
         return True
     
+    @staticmethod
+    def validate_transacao_tipo(transacao_tipo:TransacaoTipoEnum) -> Tuple[bool,TransacaoTipoEnum]:
+        if transacao_tipo is None:
+            return False, "tipo is required"
+        if type(transacao_tipo) != TransacaoTipoEnum:
+            return False, "Transação tipo must be a TransacaoTipoEnum"
+        return True
