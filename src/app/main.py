@@ -51,6 +51,31 @@ def get_history(type: str, value: float, current_balance: float, timestamp: floa
   ]
 }
 
+@app.post("/withdraw")
+def create_withdraw(request: dict):
+    withdraw_request = {
+        "2": 1,
+        "5": 2,
+        "10": 3,
+        "20": 4,
+        "50": 5 ,
+        "100": 6,
+        "200": 7
+    }
+    total_withdraw = sum(int(note) * int(quantity) for note, quantity in withdraw_request.items())
+    current_balance = request.get("current_balance")
+
+    #erro
+    if total_withdraw > current_balance:
+        return {"status_code": 403, "message": "Saldo insuficiente para transação"}
+
+    return{
+        "current_balance": 1000.0,
+        "timestamp": 1690482853890 
+    }
+
+
+
 #deposito
 @app.post("/deposit")
 def create_deposit(request: dict):
