@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from mapip install mangumngum import Mangum
+from mangum import Mangum
 
 from .environments import Environments
 
