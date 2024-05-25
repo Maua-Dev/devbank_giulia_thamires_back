@@ -67,7 +67,7 @@ def create_withdraw(request: dict):
 
     #erro
     if total_withdraw > current_balance:
-        return {"status_code": 403, "message": "Saldo insuficiente para transação"}
+        raise HTTPException(status_code=403, detail="Saldo insuficiente para transação")
 
     return{
         "current_balance": 1000.0,
@@ -94,11 +94,13 @@ def create_deposit(request: dict):
 
 # erro
     if total_deposit == 2 * current_balance:
-        return {"status_code": 403, "message": "Depósito suspeito"}
+        raise HTTPException(status_code=403, detail="Depósito suspeito")
 
     return{
         "current_balance": 1000.0,
         "timestamp": 1690482853890
     }
+
+
 
 handler = Mangum(app, lifespan="off")
