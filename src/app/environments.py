@@ -1,10 +1,9 @@
-
 from enum import Enum
 import os
 
 from .errors.environment_errors import EnvironmentNotFound
 
-from .repo.item_repository_interface import IItemRepository
+from .repo.transacao_repository_interface import ITrasacaoRepository
 
 
 class STAGE(Enum):
@@ -35,10 +34,10 @@ class Environments:
         self.stage = STAGE[os.environ.get("STAGE")]
 
     @staticmethod
-    def get_item_repo() -> IItemRepository:
+    def get_transacao_repo() -> ITrasacaoRepository:
         if Environments.get_envs().stage == STAGE.TEST:
-            from .repo.item_repository_mock import ItemRepositoryMock
-            return ItemRepositoryMock
+            from .repo.transacao_repository_mock import TransacaoRepositoryMock
+            return TransacaoRepositoryMock
         # use "elif" conditional to add other stages
         else:
             raise EnvironmentNotFound("STAGE")

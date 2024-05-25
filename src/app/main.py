@@ -3,135 +3,134 @@ from mangum import Mangum
 
 from .environments import Environments
 
-from .repo.item_repository_mock import ItemRepositoryMock
+from .repo.transacao_repository_mock import TransacaoRepositoryMock
 
 from .errors.entity_errors import ParamNotValidated
 
-from .enums.item_type_enum import ItemTypeEnum
+from .enums.transacao_tipo_enum import TransacaoTipoEnum
 
-from .entities.item import Item
+from .entities.transacao import Transacao
+
+from .entities.usuario import Usuario
 
 
 app = FastAPI()
 
-repo = Environments.get_item_repo()()
+repo = Environments.get_transacao_repo()()
 
-@app.get("/items/get_all_items")
-def get_all_items():
-    items = repo.get_all_items()
+@app.get("/transacao/get_all_transacao")
+def get_all_transacao():
+    transacao = repo.get_all_transacao()
     return {
-        "items": [item.to_dict() for item in items]
+        "transacao": [transacao.to_dict() for transacao in transacao]
     }
 
-@app.get("/items/{item_id}")
-def get_item(item_id: int):
-    validation_item_id = Item.validate_item_id(item_id=item_id)
-    if not validation_item_id[0]:
-        raise HTTPException(status_code=400, detail=validation_item_id[1])
+@app.get("/transacao/{transacao_id}")
+def get_transacao(transacao_id: int):
+    validation_transacao_id = Transacao.validate_transacao_id(transacao_id=transacao_id)
+    if not validation_transacao_id[0]:
+        raise HTTPException(status_code=400, detail=validation_transacao_id[1])
     
-    item = repo.get_item(item_id)
+    Transacao = repo.get_transacao(transacao_id)
     
-    if item is None:
+    if Transacao is None:
         raise HTTPException(status_code=404, detail="Item Not found")
     
     return {
-        "item_id": item_id,
-        "item": item.to_dict()    
+        "transacao_id": transacao_id,
+        "item": Transacao.to_dict()    
     }
 
-@app.post("/items/create_item", status_code=201)
-def create_item(request: dict):
-    item_id = request.get("item_id")
+@app.post("/transacao/create_transacao", status_code=201)
+def create_transacao(request: dict):
+    transacao_id = request.get("transacao_id")
     
-    validation_item_id = Item.validate_item_id(item_id=item_id)
-    if not validation_item_id[0]:
-        raise HTTPException(status_code=400, detail=validation_item_id[1])
+    validation_transacao_id = Transacao.validate_transacao_id(transacao_id=transacao_id)
+    if not validation_transacao_id[0]:
+        raise HTTPException(status_code=400, detail=validation_transacao_id[1])
     
-    item = repo.get_item(item_id)
-    if item is not None:
-        raise HTTPException(status_code=409, detail="Item already exists")
+    Transacao = repo.get_transacao(transacao_id)
+    if Transacao is not None:
+        raise HTTPException(status_code=409, detail="Transacao already exists")
     
-    name = request.get("name")
-    price = request.get("price")
-    item_type = request.get("item_type")
-    if item_type is None:
-        raise HTTPException(status_code=400, detail="Item type is required")
-    if type(item_type) != str:
-        raise HTTPException(status_code=400, detail="Item type must be a string")
-    if item_type not in [possible_type.value for possible_type in ItemTypeEnum]:
-        raise HTTPException(status_code=400, detail="Item type is not a valid one")
+    valor = request.get("valor")
+    timestamp = request.get("timestamp")
+    transacao_tipo = request.get("transacao_tipo")
+    if transacao_tipo is None:
+        raise HTTPException(status_code=400, detail="Transacao type is required")
+    if type(transacao_tipo) != str:
+        raise HTTPException(status_code=400, detail="Transação tipo must be a string")
+    if transacao_tipo not in [possible_type.value for possible_type in TransacaoTipoEnum]:
+        raise HTTPException(status_code=400, detail="Transação Tipo is not a valid one")
     
     admin_permission = request.get("admin_permission")
     
     try:
-        item = Item(name=name, price=price, item_type=ItemTypeEnum[item_type], admin_permission=admin_permission)
+        Transacao = Transacao(valor=valor, timestamp=timestamp, transacao_tipo=TransacaoTipoEnum[transacao_tipo])
     except ParamNotValidated as err:
         raise HTTPException(status_code=400, detail=err.message)
     
-    item_response = repo.create_item(item, item_id)
+    transacao_response = repo.create_transacao(Transacao, transacao_id)
     return {
-        "item_id": item_id,
-        "item": item_response.to_dict()    
+        "transacao_id": transacao_id,
+        "transacao": transacao_response.to_dict()    
     }
     
-@app.delete("/items/delete_item")
-def delete_item(request: dict):
-    item_id = request.get("item_id")
+@app.delete("/transacao/delete_trasacao")
+def delete_transacao(request: dict):
+    transacao_id = request.get("transacao_id")
     
-    validation_item_id = Item.validate_item_id(item_id=item_id)
-    if not validation_item_id[0]:
-        raise HTTPException(status_code=400, detail=validation_item_id[1])
+    validation_transacao_id = Transacao.validate_transacao_id(transacao_id=transacao_id)
+    if not validation_transacao_id[0]:
+        raise HTTPException(status_code=400, detail=validation_transacao_id[1])
     
-    item = repo.get_item(item_id)
+    Transacao = repo.get_transacao(transacao_id)
     
-    if item is None:
-        raise HTTPException(status_code=404, detail="Item Not found")
+    if Transacao is None:
+        raise HTTPException(status_code=404, detail="Transação Not found")
     
-    if item.admin_permission == True:
-        raise HTTPException(status_code=403, detail="Item Not found")
+    if Transacao.admin_permission == True:
+        raise HTTPException(status_code=403, detail="Transação Not found")
     
-    item_deleted = repo.delete_item(item_id)
+    transacao_deleted = repo.delete_transacao(transacao_id)
     
     return {
-        "item_id": item_id,
-        "item": item_deleted.to_dict()    
+        "transacao_id": transacao_id,
+        "transacao": transacao_deleted.to_dict()    
     }
     
-@app.put("/items/update_item")
-def update_item(request: dict):
-    item_id = request.get("item_id")
+@app.put("/transacao/update_transacao")
+def update_transacao(request: dict):
+    transacao_id = request.get("transacao_id")
     
-    validation_item_id = Item.validate_item_id(item_id=item_id)
-    if not validation_item_id[0]:
-        raise HTTPException(status_code=400, detail=validation_item_id[1])
+    validation_transacao_id = Transacao.validate_transacao_id(transacao_id=transacao_id)
+    if not validation_transacao_id[0]:
+        raise HTTPException(status_code=400, detail=validation_transacao_id[1])
     
-    item = repo.get_item(item_id)
+    Transacao = repo.get_transacao(transacao_id)
     
-    if item is None:
-        raise HTTPException(status_code=404, detail="Item Not found")
+    if Transacao is None:
+        raise HTTPException(status_code=404, detail="Transação Not found")
     
-    if item.admin_permission == True:
-        raise HTTPException(status_code=403, detail="Item Not found")
+    valor = request.get("valor")
+    timestamp = request.get("timestamp")
+    transacao_tipo = request.get("transacao_tipo")
     
-    name = request.get("name")
-    price = request.get("price")
-    admin_permission = request.get("admin_permission")
-    
-    item_type_value = request.get("item_type")
-    if item_type_value != None:
-        if type(item_type_value) != str:
-            raise HTTPException(status_code=400, detail="Item type must be a string")
-        if item_type_value not in [possible_type.value for possible_type in ItemTypeEnum]:
-            raise HTTPException(status_code=400, detail="Item type is not a valid one")
-        item_type = ItemTypeEnum[item_type_value]
+    transacao_type_value = request.get("transacao_type")
+    if transacao_type_value != None:
+        if type(transacao_type_value) != str:
+            raise HTTPException(status_code=400, detail="Transação type must be a string")
+        if transacao_type_value not in [possible_type.value for possible_type in TransacaoTipoEnum]:
+            raise HTTPException(status_code=400, detail="Transação Tipo is not a valid one")
+        transacao_type = TransacaoTipoEnum[transacao_type_value]
     else:
-        item_type = None
+        transacao_type = None
         
-    item_updated = repo.update_item(item_id, name, price, item_type, admin_permission)
+    transacao_updated = repo.update_transacao(transacao_id, valor, timestamp, transacao_type, transacao_tipo)
     
     return {
-        "item_id": item_id,
-        "item": item_updated.to_dict()    
+        "transacao_id": transacao_id,
+        "transacao": transacao_updated.to_dict()    
     }
     
 
