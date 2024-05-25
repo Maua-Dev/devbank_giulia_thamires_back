@@ -39,12 +39,12 @@ class UsuarioRepositoryMock(IUsuarioRepository):
         
         if name is not None:
             usuario.name = name
-        if price is not None:
-            usuario.price = price
-        if usuario_type is not None:
-            usuario.iusuario_type = usuario_type
-        if admin_permission is not None:
-            usuario.admin_permission = admin_permission
+        if agency is not None:
+            usuario.agency = agency
+        if account is not None:
+            usuario.account = account
+        if current_balance is not None:
+            usuario.current_balance = current_balance
         self.usuarios[usuario_id] = usuario
         
         return usuario
