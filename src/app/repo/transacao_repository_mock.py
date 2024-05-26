@@ -8,9 +8,10 @@ from .transacao_repository_interface import ITrasacaoRepository
 class TransacaoRepositoryMock(ITrasacaoRepository):
     transacao: Dict[int, Transacao]
     
+    #
     def __init__(self):
         self.transacao = {
-            1: Transacao(timestamp=1691707990727.101,transacao_tipo="deposit",valor=1000.0),
+            1: Transacao(timestamp=1691707990727.101,transacao_tipo=TransacaoTipoEnum.withdraw,valor=1000.0),
         }
         
     def get_all_transacao(self) -> List[Transacao]:
