@@ -29,7 +29,7 @@ class Transacao:
             return False, "valor is required"
         if type(valor) != float:
             return False, "valor must be a float"
-        return True
+        return True, ""
         
     @staticmethod
     def validate_timestamp(timestamp: float) -> Tuple[bool,float]:
@@ -37,7 +37,7 @@ class Transacao:
             return False, "timestamp is required"
         if type(timestamp) != float:
             return False, "timestamp must be a float"
-        return True
+        return True, ""
     
     @staticmethod
     def validate_transacao_tipo(transacao_tipo:TransacaoTipoEnum) -> Tuple[bool,TransacaoTipoEnum]:
@@ -45,4 +45,4 @@ class Transacao:
             return False, "tipo is required"
         if type(transacao_tipo) != TransacaoTipoEnum:
             return False, "Transação tipo must be a TransacaoTipoEnum"
-        return True
+        return True, ""

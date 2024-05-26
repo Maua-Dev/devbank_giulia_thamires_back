@@ -35,7 +35,7 @@ class Usuario:
             return False, "name is required"
         if type(name) != str:
             return False, "Name must be a string"
-        return True
+        return True, ""
     
     @staticmethod
     def validate_agency(agency: str) -> Tuple[bool,str]:
@@ -47,7 +47,7 @@ class Usuario:
             return False, "agency must have 4 digits"
         if not agency.isnumeric():
             return False, "agency must be numeric"
-        return True
+        return True, ""
     
     @staticmethod
     def validate_account(account: str) -> Tuple[bool,str]:
@@ -57,12 +57,12 @@ class Usuario:
             return False, "account must be a string"
         if len(account) != 6:
             return False, "account must have 6 digits"
-        if account[5] != "-":
+        if account[4] != "-":
             return False, "invalid format"
         account_splited = account.split("-")
         if not account_splited[0].isnumeric() or not account_splited[1].isnumeric():
             return False, "invalid format"
-        return True
+        return True, ""
     
     @staticmethod
     def validate_balance(balance: float) -> Tuple[bool,float]:
@@ -72,5 +72,5 @@ class Usuario:
             return False, "balance must be a float"
         if balance < 0:
             return False, "balance can't be less than 0"
-        return True
+        return True, ""
         

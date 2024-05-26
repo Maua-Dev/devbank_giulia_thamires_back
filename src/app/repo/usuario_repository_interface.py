@@ -1,12 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional, Tuple
 
-from ..enums.usuario_type_enum import UserTypeEnum
-
 from ..entities.usuario import Usuario
 
 
-class IItemRepository(ABC):
+class IUsuarioRepository(ABC):
     
     
     @abstractmethod
@@ -46,4 +44,5 @@ class IItemRepository(ABC):
         '''
         pass
     
+
     

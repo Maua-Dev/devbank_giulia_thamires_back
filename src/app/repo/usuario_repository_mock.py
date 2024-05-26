@@ -10,10 +10,7 @@ class UsuarioRepositoryMock(IUsuarioRepository):
     
     def __init__(self):
         self.usuarios = {
-            1: Usuario(name="Barbie", price=48.90, usuario_type=UsuarioTypeEnum.TOY, admin_permission=False),
-            2: Usuario(name="Hamburguer", price=38.00, usuario_type=UsuarioTypeEnum.FOOD, admin_permission=False),
-            3: Usuario(name="T-shirt", price=22.95, usuario_type=UsuarioTypeEnum.CLOTHES, admin_permission=False),
-            4: Usuario(name="Super Mario Bros", price=55.00, usuario_type=UsuarioTypeEnum.GAMES, admin_permission=True)
+            1: Usuario(name="Soller", account="0000-0", agency="0000",current_balance=1000.0)
         }
         
     def get_all_usuarios(self) -> List[Usuario]:

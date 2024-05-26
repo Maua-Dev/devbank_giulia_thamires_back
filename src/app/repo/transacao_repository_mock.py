@@ -10,10 +10,7 @@ class TransacaoRepositoryMock(ITrasacaoRepository):
     
     def __init__(self):
         self.transacao = {
-            1: Transacao(name="Barbie", price=48.90, transacao_type=TransacaoTipoEnum.TOY, admin_permission=False),
-            2: Transacao(name="Hamburguer", price=38.00, transacao_type=TransacaoTipoEnum.FOOD, admin_permission=False),
-            3: Transacao(name="T-shirt", price=22.95, transacao_type=TransacaoTipoEnum.CLOTHES, admin_permission=False),
-            4: Transacao(name="Super Mario Bros", price=55.00, transacao_type=TransacaoTipoEnum.GAMES, admin_permission=True)
+            1: Transacao(timestamp=1691707990727.101,transacao_tipo="deposit",valor=1000.0),
         }
         
     def get_all_transacao(self) -> List[Transacao]:
@@ -32,7 +29,7 @@ class TransacaoRepositoryMock(ITrasacaoRepository):
         return transacao
         
         
-    def update_item(self, transacao_id:int, valor: float,timestamp: float, transacao_tipo: TransacaoTipoEnum) -> Transacao:
+    def update_transacao(self, transacao_id:int, valor: float,timestamp: float, transacao_tipo: TransacaoTipoEnum) -> Transacao:
         transacao = self.transacao.get(transacao_id, None)
         if transacao is None:
             return None
