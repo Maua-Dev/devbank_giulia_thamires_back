@@ -31,46 +31,46 @@ class Usuario:
 
     @staticmethod
     def validate_name(name: str) -> Tuple[bool,str]:
-        if name is None: #
+        if name is None: #feito
             return False, "name is required"
-        if type(name) != str: #
+        if type(name) != str: #feito
             return False, "Name must be a string"
         return True, ""
     
     @staticmethod
     def validate_agency(agency: str) -> Tuple[bool,str]:
-        if agency is None:
+        if agency is None: #feito
             return False, "agency is required"
-        if type(agency) != str:
+        if type(agency) != str: #feito
             return False, "agency must be a string"
-        if len(agency) != 4:
+        if len(agency) != 4: #feito
             return False, "agency must have 4 digits"
-        if not agency.isnumeric():
+        if not agency.isnumeric(): #feito
             return False, "agency must be numeric"
         return True, ""
     
     @staticmethod
     def validate_account(account: str) -> Tuple[bool,str]:
-        if account is None:
+        if account is None: #feito
             return False, "account is required"
-        if type(account) != str:
+        if type(account) != str: #feito
             return False, "account must be a string"
-        if len(account) != 6:
+        if len(account) != 7: #feito
             return False, "account must have 6 digits"
-        if account[4] != "-":
+        if account[5] != "-": #feito
             return False, "invalid format"
         account_splited = account.split("-")
-        if not account_splited[0].isnumeric() or not account_splited[1].isnumeric():
+        if not account_splited[0].isnumeric() or not account_splited[1].isnumeric(): #feito
             return False, "invalid format"
         return True, ""
     
     @staticmethod
     def validate_balance(balance: float) -> Tuple[bool,float]:
-        if balance is None:
+        if balance is None: #feito
             return False, "balance is required"
         if type(balance) != float:
             return False, "balance must be a float"
-        if balance < 0:
+        if balance < 0: #feito
             return False, "balance can't be less than 0"
         return True, ""
         
