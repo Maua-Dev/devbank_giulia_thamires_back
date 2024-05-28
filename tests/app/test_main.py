@@ -4,7 +4,7 @@ from src.app.entities.usuario import Usuario
 from src.app.entities.transacao import Transacao
 from src.app.enums.transacao_tipo_enum import TransacaoTipoEnum
 from src.app.enums.usuario_type_enum import UsuarioTypeEnum
-from src.app.main import get_history, create_deposit, create_withdraw
+from src.app.main import get_history, create_deposit, create_withdraw, create_api
 from src.app.repo.transacao_repository_mock import TransacaoRepositoryMock
 from src.app.repo.usuario_repository_mock import UsuarioRepositoryMock
 
@@ -51,3 +51,16 @@ class Test_Main:
         }
         with pytest.raises(HTTPException) as err:
             create_withdraw(request=body)
+    
+    def test_get_api(self):
+        repo = TransacaoRepositoryMock()
+
+        body = {
+            "name": "Vitor Soller",
+            "agency": "0000",
+            "account": "00000-0",
+            "current_balance": 1000.0
+        }
+        with pytest.raises(HTTPException) as err:
+            create_api(request=body)
+    
