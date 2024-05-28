@@ -31,9 +31,9 @@ class Usuario:
 
     @staticmethod
     def validate_name(name: str) -> Tuple[bool,str]:
-        if name is None:
+        if name is None: #
             return False, "name is required"
-        if type(name) != str:
+        if type(name) != str: #
             return False, "Name must be a string"
         return True, ""
     
