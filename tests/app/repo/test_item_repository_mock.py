@@ -27,7 +27,7 @@ class Test_ItemRepositoryMock:
         assert len_after == len_before + 1
         assert repo.items.get(0) == item
         
-    def test_delete_item(self):
+    def test_delete_item(self): 
         repo = ItemRepositoryMock()
         item_expected_to_be_deleted = repo.items.get(1)
         len_before = len(repo.items)
