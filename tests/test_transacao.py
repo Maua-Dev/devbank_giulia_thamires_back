@@ -1,3 +1,4 @@
+import pytest
 from src.app.entities.transacao import Transacao
 from src.app.enums.transacao_tipo_enum import TransacaoTipoEnum
 from src.app.errors.entity_errors import ParamNotValidated
